@@ -36,29 +36,38 @@ struct ContentView: View {
     }
 
     private var header: some View {
-        HStack(alignment: .firstTextBaseline) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text("BRUTALZIP")
-                    .font(.custom("HelveticaNeue-CondensedBlack", size: 56))
-                Text("OPEN SOURCE ZIP WAR MACHINE FOR MAC")
-                    .font(.custom("AvenirNextCondensed-DemiBold", size: 14))
-                    .tracking(2)
+        VStack(spacing: 0) {
+            HStack(alignment: .center) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("BRUTALZIP")
+                        .font(.custom("HelveticaNeue-CondensedBlack", size: 64))
+                        .foregroundStyle(BrutalPalette.ink)
+                    Text("OPEN SOURCE ZIP WAR MACHINE FOR MAC")
+                        .font(.custom("AvenirNextCondensed-DemiBold", size: 16))
+                        .tracking(3)
+                        .foregroundStyle(BrutalPalette.ink.opacity(0.8))
+                }
+
+                Spacer()
+
+                VStack(alignment: .trailing, spacing: 8) {
+                    Text(state.statusLine)
+                        .font(.custom("AvenirNextCondensed-Heavy", size: 16))
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(state.statusLine == "ERROR" ? BrutalPalette.error : (state.statusLine == "READY" ? BrutalPalette.signal : BrutalPalette.accent))
+                        .overlay(Rectangle().stroke(Color.black, lineWidth: 3))
+                        .shadow(color: .black.opacity(0.3), radius: 0, x: 4, y: 4)
+                }
             }
-
-            Spacer()
-
-            Text(state.statusLine)
-                .font(.custom("AvenirNextCondensed-Heavy", size: 14))
-                .padding(.horizontal, 10)
-                .padding(.vertical, 8)
-                .background(state.statusLine == "ERROR" ? BrutalPalette.error : BrutalPalette.signal)
-                .overlay(Rectangle().stroke(Color.black, lineWidth: 3))
+            .padding(.horizontal, 20)
+            .padding(.vertical, 20)
+            .background(BrutalPalette.panel)
+            
+            Rectangle()
+                .fill(Color.black)
+                .frame(height: 6)
         }
-        .padding(.horizontal, 14)
-        .padding(.top, 14)
-        .padding(.bottom, 10)
-        .background(BrutalPalette.panel)
-        .overlay(Rectangle().stroke(Color.black, lineWidth: 4))
     }
 
     private var leftPanel: some View {
@@ -178,7 +187,7 @@ struct ContentView: View {
                     .frame(minHeight: 320)
                     .overlay(Rectangle().stroke(Color.black, lineWidth: 3))
 
-                    smallNote("Tip: Use Cmd+Click for multi-select, then Delete Selected.")
+                    smallNote("Tip: Use Cmd+Click for multi-select.")
                 }
             }
 
@@ -202,9 +211,10 @@ struct ContentView: View {
 
     private func smallNote(_ text: String) -> some View {
         Text(text)
-            .font(.custom("AvenirNextCondensed-Regular", size: 11))
+            .font(.custom("AvenirNextCondensed-Medium", size: 13))
             .frame(maxWidth: .infinity, alignment: .leading)
-            .foregroundStyle(.black.opacity(0.8))
+            .foregroundStyle(.black.opacity(1.0))
+            .padding(.top, 4)
     }
 }
 
@@ -272,24 +282,25 @@ private struct BrutalButton: View {
     var body: some View {
         Button(action: action) {
             Text(label.uppercased())
-                .font(.custom("AvenirNextCondensed-Heavy", size: 12))
+                .font(.custom("AvenirNextCondensed-Heavy", size: 14))
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 10)
+                .padding(.vertical, 12)
                 .background(tone.background)
                 .foregroundStyle(tone.foreground)
-                .overlay(Rectangle().stroke(Color.black, lineWidth: 2))
+                .overlay(Rectangle().stroke(Color.black, lineWidth: 3))
         }
         .buttonStyle(.plain)
+        .shadow(color: .black.opacity(0.15), radius: 0, x: 4, y: 4)
     }
 }
 
 private struct BrutalFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
-            .font(.custom("AvenirNextCondensed-Regular", size: 12))
-            .padding(.horizontal, 8)
-            .padding(.vertical, 7)
+            .font(.custom("AvenirNextCondensed-Medium", size: 14))
+            .padding(.horizontal, 10)
+            .padding(.vertical, 10)
             .background(Color.white)
-            .overlay(Rectangle().stroke(Color.black, lineWidth: 2))
+            .overlay(Rectangle().stroke(Color.black, lineWidth: 2.5))
     }
 }
